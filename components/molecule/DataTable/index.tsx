@@ -24,11 +24,6 @@ import {
 } from "@/components/ui/table"
 import {columns} from "@/components/molecule/DataTable/Column";
 import {Skeleton} from "@/components/ui/skeleton";
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu"
-import { ChevronDown } from "lucide-react"
-import {AddBatteryForm} from "@/components/molecule/AddBatteryForm";
 import {BatteriesResponse} from "@/interfaces";
 import {SearchTable} from "@/components/atom/SearchTable";
 
