@@ -74,7 +74,9 @@ export const columns: ColumnDef<Battery>[] = [
             )
         },
         cell: ({ row }) => {
-            return <div className="font-medium">{row.getValue("wattCapacity")}</div>
+            const capacity = parseFloat(row.getValue("wattCapacity"))
+            return <div className="font-medium">{capacity.toLocaleString('en-US')}</div>
         },
+
     },
 ]
