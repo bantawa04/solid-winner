@@ -11,7 +11,7 @@ interface IProps<T> {
 export const SearchTable:React.FC<IProps<any>> =({table}) => {
  return   <div className="flex items-center py-4">
         <Input
-            placeholder="Filter emails..."
+            placeholder="Filter by name..."
             value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
