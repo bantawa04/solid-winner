@@ -12,16 +12,8 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import {ChevronDown} from "lucide-react"
 
 import {Button} from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {Input} from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -30,14 +22,21 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {columns} from "@/components/atom/DataTable/Column";
-import {AddBatteryForm} from "@/components/AddBatteryForm";
-import {useQuery} from "@tanstack/react-query";
-import {getBatteries} from "@/services/battery";
+import {columns} from "@/components/molecule/DataTable/Column";
 import {Skeleton} from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu"
+import { ChevronDown } from "lucide-react"
+import {AddBatteryForm} from "@/components/molecule/AddBatteryForm";
+import {BatteriesResponse} from "@/interfaces";
+import {SearchTable} from "@/components/atom/SearchTable";
 
-
-const DataTable: React.FC = () => {
+interface IProps {
+    data: BatteriesResponse|undefined,
+    loading: boolean
+}
+const DataTable: React.FC<IProps> = ({data, loading}) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
         []
@@ -47,7 +46,7 @@ const DataTable: React.FC = () => {
     const [rowSelection, setRowSelection] = useState({})
 
     const table = useReactTable({
-        data: [],
+        data: data?.batteries || [],
         columns: columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -70,58 +69,20 @@ const DataTable: React.FC = () => {
         },
     })
 
-    const {data:data, isLoading} = useQuery({
-        queryKey: ['get-battery'],
-        queryFn: getBatteries,
-    })
 
     return (
 
         <div className="w-full">
-            {isLoading ? (
+            <SearchTable table={table}/>
+            {loading ? (
                 <div className="space-y-2">
+                    <Skeleton className="h-4 w-full"/>
+                    <Skeleton className="h-4 w-full"/>
                     <Skeleton className="h-4 w-full"/>
                 </div>
             ) : (
-                response.batteries.length > 0 ? (
+                data?.batteries?.length > 0 ? (
                     <>
-                        <div className="flex items-center py-4">
-                            <Input
-                                placeholder="Filter by name"
-                                value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-                                onChange={(event) =>
-                                    table.getColumn("name")?.setFilterValue(event.target.value)
-                                }
-                                className="max-w-sm"
-                            />
-                            <AddBatteryForm/>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline" className="ml-auto">
-                                        Columns <ChevronDown className="ml-2 h-4 w-4"/>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    {table
-                                        .getAllColumns()
-                                        .filter((column) => column.getCanHide())
-                                        .map((column) => {
-                                            return (
-                                                <DropdownMenuCheckboxItem
-                                                    key={column.id}
-                                                    className="capitalize"
-                                                    checked={column.getIsVisible()}
-                                                    onCheckedChange={(value) =>
-                                                        column.toggleVisibility(!!value)
-                                                    }
-                                                >
-                                                    {column.id}
-                                                </DropdownMenuCheckboxItem>
-                                            )
-                                        })}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
                         <div className="rounded-md border">
                             <Table>
                                 <TableHeader>
