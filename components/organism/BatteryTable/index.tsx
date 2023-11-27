@@ -16,7 +16,7 @@ export const BatteryTable = () => {
             <div className="w-1/2">
                 <div className="rounded-xl border bg-card text-card-foreground shadow">
                     <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-                       <h1> Total Capacity</h1>
+                       <h1> Total Capacity (Watts)</h1>
                         <BatteryCharging/>
                     </div>
                     <div className="p-6 pt-0">
@@ -31,7 +31,7 @@ export const BatteryTable = () => {
             <div className="w-1/2">
                 <div className="rounded-xl border bg-card text-card-foreground shadow">
                     <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-                        <h1>Average Watt</h1>
+                        <h1>Average Watt(Watts)</h1>
                         <Activity/>
                     </div>
                     <div className="p-6 pt-0">
