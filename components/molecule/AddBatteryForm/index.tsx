@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {BatteryRequest} from "@/interfaces";
 import {useMutation, useQueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import { useToast } from "@/components/ui/use-toast"
 import {createBattery} from "@/services/battery";
 
 const schema = object({
@@ -20,6 +20,7 @@ const schema = object({
 export const AddBatteryForm: React.FC = () => {
     const queryClient = useQueryClient()
     const [open, setOpen] = useState(false)
+    const { toast } = useToast()
     const {
         register,
         handleSubmit,
@@ -38,8 +39,19 @@ export const AddBatteryForm: React.FC = () => {
             onSuccess: () => {
                 setOpen(!open)
                 reset()
+                toast({
+                    title: "Success!",
+                    description: "Record added successfully",
+                })
                 queryClient.invalidateQueries({ queryKey: ['getBatteries'] })
+
             },
+            onError:() =>{
+                toast({
+                    title: "Error!",
+                    description: "Something went wrong !",
+                })
+            }
         }
     )
 
